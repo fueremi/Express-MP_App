@@ -1,6 +1,7 @@
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const mongoose = require('mongoose');
 const User = require('../models/User');
+const UserRole = require('../models/UserRole');
 
 module.exports = function(passport) {
     passport.use(new GoogleStrategy({
@@ -9,11 +10,13 @@ module.exports = function(passport) {
         callbackURL: '/v1/auth/google/callback'
     },
     async (accessToken, refreshToken, profile, done) => {
+        let role = await UserRole.findOne({ role: 'Administrator'})
         const newUser = {
             googleId: profile.id,
             displayName: profile.displayName,
             firstName: profile.name.givenName,
             lastName: profile.name.familyName,
+            role_id: role._id,
             image: profile.photos[0].value,
         }
 

@@ -20,6 +20,16 @@ const UserSchema = new mongoose.Schema({
     image: {
         type: String
     },
+    role_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'UserRole'
+    },
+    is_active: {
+        type: Number,
+        min: 0,
+        max: 1,
+        default: 1
+    },
     createdAt: {
         type: Date,
         default: Date.now
